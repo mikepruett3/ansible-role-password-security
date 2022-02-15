@@ -70,7 +70,7 @@
         new_module_path: pam_warn.so
         state: after
         backup: yes
-        when: ansible_os_family == 'Debian'
+      when: ansible_os_family == 'Debian'
 
 - name: "Restart SSH Daemon"
   ansible.builtin.service:
