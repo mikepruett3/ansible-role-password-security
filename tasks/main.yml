@@ -59,6 +59,18 @@
         state: after
         backup: yes
       when: ansible_os_family == 'RedHat'
+    - name: "Add password pam_warn.so to password-auth (Debian)"
+      community.general.pamd:
+        name: "{{ password_auth }}"
+        type: password
+        control: requisite
+        module_path: pam_deny.so
+        new_type: password
+        new_control: required
+        new_module_path: pam_warn.so
+        state: after
+        backup: yes
+        when: ansible_os_family == 'Debian'
 
 - name: "Restart SSH Daemon"
   ansible.builtin.service:
