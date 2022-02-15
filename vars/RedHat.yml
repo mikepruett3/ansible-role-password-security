@@ -1,0 +1,7 @@
+---
+  # In Red Hat Enterprise Linux 7, the pam_pwquality PAM module replaced pam_cracklib,
+  # which was used in Red Hat Enterprise Linux 6 as a default module for password quality checking.
+  # It uses the same back end as pam_cracklib.
+  cracklib_package: libpwquality
+  password_auth: password-auth
+  system_auth: system-auth
