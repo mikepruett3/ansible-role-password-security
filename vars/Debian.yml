@@ -5,4 +5,4 @@
   cracklib_package: libpam-pwquality
   password_auth: common-password
   system_auth:
-  
+  ssh_daemon: ssh

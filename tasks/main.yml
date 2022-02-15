@@ -59,3 +59,8 @@
         state: after
         backup: yes
       when: ansible_os_family == 'RedHat'
+
+- name: "Restart SSH Daemon"
+  ansible.builtin.service:
+    name: "{{ ssh_daemon }}"
+    state: restarted

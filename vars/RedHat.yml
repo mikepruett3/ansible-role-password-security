@@ -5,3 +5,4 @@
   cracklib_package: libpwquality
   password_auth: password-auth
   system_auth: system-auth
+  ssh_daemon: sshd
