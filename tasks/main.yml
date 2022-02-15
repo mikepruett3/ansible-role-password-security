@@ -49,7 +49,7 @@
         backup: yes
     - name: "Add password pam_warn.so to system_auth (RedHat)"
       community.general.pamd:
-        name: "{{ password_auth }}"
+        name: "{{ system_auth }}"
         type: password
         control: required
         module_path: pam_deny.so
