@@ -72,6 +72,14 @@
         backup: yes
       when: ansible_os_family == 'Debian'
 
+- name: "Disable Core Dumps with limits"
+  community.general.pam_limits:
+    dest: /etc/security/limits.conf
+    domain: '*'
+    limit_type: hard
+    limit_item: core
+    value: 0
+
 - name: "Restart SSH Daemon"
   ansible.builtin.service:
     name: "{{ ssh_daemon }}"
