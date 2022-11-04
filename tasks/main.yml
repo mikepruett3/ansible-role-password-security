@@ -2,7 +2,7 @@
 # tasks file for ansible-role-password-security/
 
 - name: "Include OS-specific variables"
-  include_vars: "{{ ansible_os_family }}.yml"
+  include_vars: "{{ ansible_os_family }}.yaml"
 
 - name: "Gather the package facts"
   ansible.builtin.package_facts:
@@ -14,63 +14,62 @@
     name: "{{ cracklib_package }}"
     state: present
 
-- name: "Enforce Password Quality in PAM"
-  block:
-    - name: "Change password cracklib library to required in password_auth"
-      community.general.pamd:
-        name: "{{ password_auth }}"
-        type: password
-        control: requisite
-        module_path: pam_pwquality.so
-        new_control: required
-        backup: yes
-    - name: "Change password cracklib library to required in system_auth (RedHat)"
-      community.general.pamd:
-        name: "{{ system_auth }}"
-        type: password
-        control: requisite
-        module_path: pam_pwquality.so
-        new_control: required
-        backup: yes
-      when: ansible_os_family == 'RedHat'
+- name: "Change password cracklib library to required in password_auth"
+  community.general.pamd:
+    name: "{{ password_auth }}"
+    type: password
+    control: requisite
+    module_path: pam_pwquality.so
+    new_control: required
+    backup: yes
 
-- name: "Enable Password Warning in PAM"
-  block:
-    - name: "Add password pam_warn.so to password-auth"
-      community.general.pamd:
-        name: "{{ password_auth }}"
-        type: password
-        control: required
-        module_path: pam_deny.so
-        new_type: password
-        new_control: required
-        new_module_path: pam_warn.so
-        state: after
-        backup: yes
-    - name: "Add password pam_warn.so to system_auth (RedHat)"
-      community.general.pamd:
-        name: "{{ system_auth }}"
-        type: password
-        control: required
-        module_path: pam_deny.so
-        new_type: password
-        new_control: required
-        new_module_path: pam_warn.so
-        state: after
-        backup: yes
-      when: ansible_os_family == 'RedHat'
-    - name: "Add password pam_warn.so to password-auth (Debian)"
-      community.general.pamd:
-        name: "{{ password_auth }}"
-        type: password
-        control: requisite
-        module_path: pam_deny.so
-        new_type: password
-        new_control: required
-        new_module_path: pam_warn.so
-        state: after
-        backup: yes
-      when: ansible_os_family == 'Debian'
+- name: "Change password cracklib library to required in system_auth (RedHat)"
+  community.general.pamd:
+    name: "{{ system_auth }}"
+    type: password
+    control: requisite
+    module_path: pam_pwquality.so
+    new_control: required
+    backup: yes
+  when: ansible_facts['os_family'] == 'RedHat'
+
+- name: "Add password pam_warn.so to password-auth"
+  community.general.pamd:
+    name: "{{ password_auth }}"
+    type: password
+    control: required
+    module_path: pam_deny.so
+    new_type: password
+    new_control: required
+    new_module_path: pam_warn.so
+    state: after
+    backup: yes
+
+- name: "Add password pam_warn.so to system_auth (RedHat)"
+  community.general.pamd:
+    name: "{{ system_auth }}"
+    type: password
+    control: required
+    module_path: pam_deny.so
+    new_type: password
+    new_control: required
+    new_module_path: pam_warn.so
+    state: after
+    backup: yes
+  when: ansible_facts['os_family'] == 'RedHat'
+
+- name: "Add password pam_warn.so to password-auth (Debian)"
+  community.general.pamd:
+    name: "{{ password_auth }}"
+    type: password
+    control: requisite
+    module_path: pam_deny.so
+    new_type: password
+    new_control: required
+    new_module_path: pam_warn.so
+    state: after
+    backup: yes
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: "Disable Core Dumps with limits"
   community.general.pam_limits:

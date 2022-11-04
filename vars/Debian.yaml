@@ -1,0 +1,11 @@
+---
+# Debian vars file for ansible-role-password-security/
+
+# This  module  can  be  plugged  into the password stack of a given service to provide some
+# plug-in strength-checking for passwords. The code was  originally  based  on  pam_cracklib
+# module and the module is backwards compatible with its options.
+
+cracklib_package: libpam-pwquality
+password_auth: common-password
+system_auth:
+ssh_daemon: ssh
